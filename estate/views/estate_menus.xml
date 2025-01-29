@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<odoo>
+    <!-- Menú principal per al mòdul de Propietat Immobiliària -->
+    <menuitem id="estate_menu_root" name="Propietat Immobiliària"/>
+
+    <!-- Submenú dins del menú principal per gestionar els anuncis -->
+    <menuitem id="estate_first_level_menu" name="Anuncis" parent="estate_menu_root"/>
+
+    <!-- Acció que obre la vista de propietats dins del submenú Anuncis -->
+    <menuitem id="estate_menu_action" action="estate_property_action" parent="estate_first_level_menu"/>
+</odoo>
