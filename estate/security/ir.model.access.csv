@@ -1,12 +1,5 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-# Permisos per al model estate.property (Propietats)
 access_estate_property,access_estate_property,model_estate_property,,1,1,1,1
-
-# Permisos per al model estate.property.type (Tipus de propietats)
 access_estate_property_type,access_estate_property_type,model_estate_property_type,,1,1,1,1
-
-# Permisos per al model estate.property.tag (Etiquetes de propietats)
 access_estate_property_tag,access_estate_property_tag,model_estate_property_tag,,1,1,1,1
-
-# Permisos per al model estate.property.offer (Ofertes de propietats)
 access_estate_property_offer,access_estate_property_offer,model_estate_property_offer,,1,1,1,1
