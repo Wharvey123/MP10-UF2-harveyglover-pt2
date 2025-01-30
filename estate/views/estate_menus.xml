@@ -1,11 +1,49 @@
 <?xml version="1.0"?>
+<!-- La capçalera XML que indica la versió del document XML. -->
 <odoo>
-    <!-- Menú principal per al mòdul de Propietat Immobiliària -->
-    <menuitem id="estate_menu_root" name="Propietat Immobiliària"/>
+    <!-- Menú principal per a la gestió de les propietats immobiliàries -->
+    <menuitem id="estate_property_menu_root" name="Propietats Immobiliàries"/>
 
-    <!-- Submenú dins del menú principal per gestionar els anuncis -->
-    <menuitem id="estate_first_level_menu" name="Anuncis" parent="estate_menu_root"/>
+    <!-- Submenú per a la gestió d'anuncis de propietats -->
+    <menuitem id="estate_property_menu" name="Anuncis" parent="estate_property_menu_root"/>
+    <!-- Acció associada al submenú d'anuncis de propietats -->
+    <menuitem id="estate_property_menu_action" name="Anuncis" parent="estate_property_menu" action="estate_property_action"/>
 
-    <!-- Acció que obre la vista de propietats dins del submenú Anuncis -->
-    <menuitem id="estate_menu_action" action="estate_property_action" parent="estate_first_level_menu"/>
+    <!-- Definició de l'acció de finestra per als anuncis de propietats -->
+    <record id="estate_property_action" model="ir.actions.act_window">
+        <!-- Nom de l'acció -->
+        <field name="name">Anuncis</field>
+        <!-- Model de registre utilitzat per aquesta acció -->
+        <field name="res_model">estate.property</field>
+        <!-- Mode de visualització: llista i formulari -->
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Menú per a la configuració general de l'aplicació de propietats immobiliàries -->
+    <menuitem id="estate_configuration_menu" name="Configuració" parent="estate_property_menu_root"/>
+
+    <!-- Definició de l'acció de finestra per a les etiquetes de propietats -->
+    <record id="estate_tag_action" model="ir.actions.act_window">
+        <!-- Nom de l'acció -->
+        <field name="name">Etiquetes</field>
+        <!-- Model de registre utilitzat per aquesta acció -->
+        <field name="res_model">estate.property.tag</field>
+        <!-- Mode de visualització: llista i formulari -->
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Definició de l'acció de finestra per als tipus de propietats -->
+    <record id="estate_type_action" model="ir.actions.act_window">
+        <!-- Nom de l'acció -->
+        <field name="name">Tipus</field>
+        <!-- Model de registre utilitzat per aquesta acció -->
+        <field name="res_model">estate.property.type</field>
+        <!-- Mode de visualització: llista i formulari -->
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Submenú per a la gestió d'etiquetes de propietats -->
+    <menuitem id="estate_tag_menu" name="Etiquetes" parent="estate_configuration_menu" action="estate_tag_action"/>
+    <!-- Submenú per a la gestió de tipus de propietats -->
+    <menuitem id="estate_type_menu" name="Tipus" parent="estate_configuration_menu" action="estate_type_action"/>
 </odoo>

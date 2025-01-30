@@ -6,4 +6,3 @@ class EstatePropertyType(models.Model):
     _description = 'Tipus de propietat'  # Descripció del model
 
     name = fields.Char('Nom', required=True)  # Nom del tipus de propietat
-    property_ids = fields.One2many('estate.property', 'type_id', string="Propietats")  # Relació amb les propietats

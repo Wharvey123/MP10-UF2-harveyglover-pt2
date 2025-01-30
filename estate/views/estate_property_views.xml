@@ -1,7 +1,103 @@
+<?xml version="1.0"?>
 <odoo>
+    <!-- Acció per obrir la llista de propietats immobiliàries -->
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Propietats</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Vista en llista -->
+    <record id="view_estate_property_list" model="ir.ui.view">
+        <field name="name">estate.property.list</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="type_id"/>
+                <field name="postalcode"/>
+                <field name="date_availability"/>
+                <field name="selling_price"/>
+                <field name="user_id"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Vista en formulari -->
+    <record id="view_estate_property_form" model="ir.ui.view">
+        <field name="name">estate.property.form</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name" nolabel="1" class="oe_highlight" style="font-size: 2em; font-weight: bold;"/>
+                        <group col="3"> 
+                            <field name="postalcode"/>
+                            <field name="date_availability"/>
+                            <field name="selling_price"/>
+                            <field name="best_offer" readonly="1"/>
+                            <field name="state"/>
+                            <field name="type_id" string="Tipus de Propietat" options="{'no_create': True}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Descripció">
+                            <group>
+                                <field name="description"/>
+                                <group>
+                                    <group string="Característiques">
+                                        <field name="tag_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                                        <field name="bedrooms"/>
+                                        <field name="bathrooms"/>
+                                        <field name="area"/>
+                                        <field name="construction_year"/>
+                                        <field name="energy_certificate"/>
+                                        <field name="user_id" options="{'no_create': True}"/>
+                                    </group>
+                                    <group string="Característiques Clau">
+                                        <field name="final_price" readonly="1"/>
+                                        <field name="buyer_id" readonly="1"/>
+                                        <field name="price_per_m2" readonly="1"/>
+                                    </group>
+                                </group>
+                                <group string="Característiques Addicionals">
+                                    <field name="has_elevator"/>
+                                    <field name="has_parking"/>
+                                    <field name="is_renovated"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Ofertes">
+                            <field name="offer_ids">
+                                <list>
+                                    <field name="price"/>
+                                    <field name="state"/>
+                                    <field name="buyer_id"/>
+                                    <field name="comments"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vista en formulari d'ofertes -->
+    <record id="view_estate_property_offer_form" model="ir.ui.view">
+        <field name="name">estate.property.offer.form</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <form string="Oferta de Propietat">
+                <group>
+                    <field name="price"/>
+                    <field name="state"/>
+                    <field name="buyer_id"/>
+                    <field name="comments"/>
+                </group>
+            </form>
+        </field>
     </record>
 </odoo>

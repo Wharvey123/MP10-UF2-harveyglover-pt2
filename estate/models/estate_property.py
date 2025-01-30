@@ -30,7 +30,7 @@ class EstateProperty(models.Model):
     final_price = fields.Float('Preu de Venda Final', readonly=True, copy=False)  # Preu final
 
     # g. Millor oferta (valor en euros, valor calculat, no modificable i no emmagatzemat en base de dades)
-    best_offer = fields.Float('Millor Oferta', compute="_compute_best_offer", store=False)  # Millor oferta
+    best_offer = fields.Float('Millor Oferta', compute="_compute_best_offer", readonly=True, store=False)  # Millor oferta
 
     # h. Estat (possibles valors: Nova, Oferta Rebuda, Oferta Acceptada, Venuda, Cancel·lada). Valor per defecte Nova.
     state = fields.Selection(  # Estat de la propietat
@@ -85,9 +85,9 @@ class EstateProperty(models.Model):
 
     # u. Llistat d’ofertes: les ofertes han de poder definir-se per l’usuari en l’aplicació.
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string="Llistat d'Ofertes")  # Ofertes
-
+  
     # v. Comprador: ha de ser un contacte existent a l’aplicació. Valor calculat, no modificable i no emmagatzemat en base de dades.
-    buyer_id = fields.Many2one('res.partner', string="Comprador", readonly=True)  # Comprador
+    buyer_id = fields.Many2one('res.partner', string="Comprador", compute='_compute_buyer', readonly=True, store=False)  # Comprador
 
     # w. Comercial: ha de ser un usuari de l’aplicació. Valor per defecte: usuari actual.
     user_id = fields.Many2one('res.users', string="Comercial", default=lambda self: self.env.user)  # Comercial
@@ -103,3 +103,11 @@ class EstateProperty(models.Model):
     def _compute_price_per_m2(self):
         for record in self:
             record.price_per_m2 = record.selling_price / record.area if record.area else 0  # Calcula el preu per m2
+
+    @api.depends('offer_ids.state', 'offer_ids.buyer_id')
+    def _compute_buyer(self):
+        for record in self:
+            accepted_offer = record.offer_ids.filtered(lambda o: o.state == 'accepted')
+            record.buyer_id = accepted_offer[:1].buyer_id if accepted_offer else False
+            if accepted_offer:
+                record.final_price = accepted_offer[:1].price

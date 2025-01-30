@@ -1,31 +1,37 @@
-# estate_property_offer.py
 from odoo import models, fields
 
 class EstatePropertyOffer(models.Model):
-    _name = 'estate.property.offer'  # Nom del model
+    _name = 'estate.property.offer'  # Nom del model dins d'Odoo
     _description = 'Ofertes de propietat'  # Descripció del model
 
-    price = fields.Float('Preu Oferit', required=True)  # Preu de l'oferta
-    state = fields.Selection(  # Estat de l'oferta
+    price = fields.Float('Preu Oferit', required=True)  # Camp per al preu de l'oferta (obligatori)
+    state = fields.Selection(  # Estat de l'oferta (pot ser acceptada, rebutjada o en tractament)
         [
-            ('accepted', 'Acceptada'),  # Estat "Acceptada"
-            ('rejected', 'Rebutjada'),  # Estat "Rebutjada"
-            ('pending', 'En tractament')  # Estat "En tractament"
+            ('accepted', 'Acceptada'),  # Oferta acceptada
+            ('rejected', 'Rebutjada'),  # Oferta rebutjada
+            ('pending', 'En tractament')  # Oferta encara pendent
         ], 
-        default='pending', string="Estat"  # Valor per defecte 'pending'
+        default='pending', string="Estat"  # Valor per defecte: 'pending'
     )
-    property_id = fields.Many2one('estate.property', string="Propietat", required=True)  # Propietat relacionada
-    partner_id = fields.Many2one('res.partner', string="Comprador")  # Comprador de la propietat
-    comments = fields.Text('Comentaris')  # Comentaris relacionats amb l'oferta
+    buyer_id = fields.Many2one('res.partner', string="Comprador")  # Relació amb el comprador de la propietat
+    comments = fields.Text('Comentaris')  # Camp per afegir comentaris opcionals sobre l'oferta
+    property_id = fields.Many2one('estate.property', string="Propietat", readonly=True)  
+    # Relació amb la propietat en venda (només lectura)
 
-    # Actualitzem propietat quan s'accepta una oferta
+    # Funció per acceptar una oferta
     def action_accept(self):
-        self.ensure_one()  # Assegura que només s'operi sobre una oferta
-        self.state = 'accepted'  # Actualitza l'estat a 'acceptada'
-        self.property_id.final_price = self.price  # Assigna el preu de l'oferta com a preu final
-        self.property_id.buyer_id = self.partner_id  # Assigna el comprador a la propietat
+        self.ensure_one()  # Garanteix que només es treballi amb un registre
+        self.state = 'accepted'  # Canvia l'estat de l'oferta a acceptada
+        self.property_id.final_price = self.price  # Assigna el preu final de la propietat
+        self.property_id.buyer_id = self.buyer_id  # Assigna el comprador de la propietat
+        self.property_id.state = 'offer_accepted'  # Canvia l'estat de la propietat a "oferta acceptada"
 
-    # Funció per rebutjar l'oferta
+    # Funció per rebutjar una oferta
     def action_reject(self):
-        self.ensure_one()  # Assegura que només s'operi sobre una oferta
-        self.state = 'rejected'  # Actualitza l'estat a 'rebutjada'
+        self.ensure_one()  # Garanteix que només es treballi amb un registre
+        self.state = 'rejected'  # Canvia l'estat de l'oferta a rebutjada
+        # Si aquesta oferta era la que havia estat acceptada, restableix el preu i el comprador
+        if self.property_id.final_price == self.price:
+            self.property_id.final_price = 0  # Elimina el preu final
+            self.property_id.buyer_id = False  # Neteja el comprador associat
+            self.property_id.state = 'new'  # Restableix l'estat de la propietat a "nova" si cal
