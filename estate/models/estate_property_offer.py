@@ -30,8 +30,15 @@ class EstatePropertyOffer(models.Model):
     def action_reject(self):
         self.ensure_one()  # Garanteix que només es treballi amb un registre
         self.state = 'rejected'  # Canvia l'estat de l'oferta a rebutjada
-        # Si aquesta oferta era la que havia estat acceptada, restableix el preu i el comprador
+        
+        # Busca si hi ha una altra oferta acceptada
+        other_accepted_offer = self.property_id.offer_ids.filtered(lambda o: o.state == 'accepted' and o.id != self.id)
+        
         if self.property_id.final_price == self.price:
-            self.property_id.final_price = 0  # Elimina el preu final
-            self.property_id.buyer_id = False  # Neteja el comprador associat
-            self.property_id.state = 'new'  # Restableix l'estat de la propietat a "nova" si cal
+            if other_accepted_offer:
+                self.property_id.final_price = other_accepted_offer[0].price  # Assigna el nou preu final
+                self.property_id.buyer_id = other_accepted_offer[0].buyer_id  # Assigna el nou comprador
+            else:
+                self.property_id.final_price = 0  # Reinicia el preu final
+                self.property_id.buyer_id = False  # Reinicia el comprador
+                self.property_id.state = 'new'  # Restableix l'estat de la propietat a "nova"

@@ -104,10 +104,14 @@ class EstateProperty(models.Model):
         for record in self:
             record.price_per_m2 = record.selling_price / record.area if record.area else 0  # Calcula el preu per m2
 
-    @api.depends('offer_ids.state', 'offer_ids.buyer_id')
+    @api.depends('offer_ids.state', 'offer_ids.price')
     def _compute_buyer(self):
         for record in self:
             accepted_offer = record.offer_ids.filtered(lambda o: o.state == 'accepted')
-            record.buyer_id = accepted_offer[:1].buyer_id if accepted_offer else False
             if accepted_offer:
-                record.final_price = accepted_offer[:1].price
+                best_accepted_offer = max(accepted_offer, key=lambda o: o.price)  # Selecciona la millor oferta acceptada
+                record.buyer_id = best_accepted_offer.buyer_id
+                record.final_price = best_accepted_offer.price  # Assigna el preu final
+            else:
+                record.buyer_id = False
+                record.final_price = 0
