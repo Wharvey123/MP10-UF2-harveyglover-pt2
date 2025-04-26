@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<odoo>
+    <!-- Vista de llista per al report -->
+    <record id="estate_property_report_suma_preus_per_estat_view_list" model="ir.ui.view">
+        <field name="name">report.estate.suma.preus.per.estat.list</field>
+        <field name="model">report.estate.suma.preus.per.estat</field>
+        <field name="arch" type="xml">
+            <list string="Suma de preus d'ofertes per estat">
+                <field name="user_id"/>
+                <field name="state"/>
+                <field name="count_offers" string="Núm. Ofertes"/>
+                <field name="total_price"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Vista gràfica per al report -->
+    <record id="estate_property_report_suma_preus_per_estat_view_graph" model="ir.ui.view">
+        <field name="name">report.estate.suma.preus.per.estat.graph</field>
+        <field name="model">report.estate.suma.preus.per.estat</field>
+        <field name="arch" type="xml">
+            <graph type="bar">
+                <field name="user_id" type="row"/>
+                <field name="state" type="col"/>
+                <field name="total_price" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Vista pivot per al report -->
+    <record id="estate_property_report_suma_preus_per_estat_view_pivot" model="ir.ui.view">
+        <field name="name">report.estate.suma.preus.per.estat.pivot</field>
+        <field name="model">report.estate.suma.preus.per.estat</field>
+        <field name="arch" type="xml">
+            <pivot>
+                <field name="user_id" type="row"/>
+                <field name="state" type="col"/>
+                <field name="total_price" type="measure"/>
+                <field name="count_offers" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Acció per obrir el report -->
+    <record id="estate_property_report_suma_preus_per_estat_action" model="ir.actions.act_window">
+        <field name="name">Suma de preus d'ofertes per estat</field>
+        <field name="res_model">report.estate.suma.preus.per.estat</field>
+        <field name="view_mode">list,pivot,graph</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Aquest report mostra la suma de preus de les ofertes agrupades per comercial i estat de la propietat
+            </p>
+        </field>
+    </record>
+
+    <!-- Menú per accedir al report -->
+    <menuitem id="menu_estate_report_suma_preus" 
+              name="Suma Preus Ofertes per Estat"
+              parent="estate_report_menu"
+              action="estate_property_report_suma_preus_per_estat_action"
+              sequence="10"/>
+</odoo>

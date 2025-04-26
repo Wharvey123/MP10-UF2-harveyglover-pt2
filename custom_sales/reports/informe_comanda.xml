@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Heretem l'informe de comanda existent per afegir camps personalitzats -->
+    <template id="informe_comanda_heredat" inherit_id="sale.report_saleorder_document">
+        <!-- Inserim informació addicional dins la pàgina de l'informe -->
+        <xpath expr="//div[@class='page']" position="inside">
+            <!-- Mostrem el nombre total d'articles de la comanda -->
+            <p><strong>Articles totals:</strong> <span t-field="doc.total_articles"/></p>
+            <!-- Mostrem el correu preferencial associat a la comanda -->
+            <p><strong>Correu preferent:</strong> <span t-field="doc.correu_preferent"/></p>
+        </xpath>
+    </template>
+</odoo>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <!-- Plantilla QWeb que utilitza directament els résums comercials seleccionats -->
+  <template id="plantilla_informe_comercial">
+    <!-- Estructura general de la pàgina, heretant els estils de Odoo -->
+    <t t-call="web.html_container">
+      <t t-call="web.external_layout">
+
+        <!-- Capçalera amb la informació de l'empresa -->
+        <div class="header" style="margin-bottom: 20px;">
+          <h2>Informe Comercial</h2>
+          <p><strong>Empresa:</strong> <t t-esc="company.name"/></p>  <!-- Nom de l'empresa -->
+          <p><strong>Adreça:</strong> <t t-esc="company.street"/></p>  <!-- Adreça de l'empresa -->
+          <p><strong>Telèfon:</strong> <t t-esc="company.phone"/></p>  <!-- Telèfon de contacte -->
+          <p><strong>Email:</strong> <t t-esc="company.email"/></p>  <!-- Correu electrònic de l'empresa -->
+          <p><strong>Lloc web:</strong> <t t-esc="company.website"/></p>  <!-- Web de l'empresa -->
+        </div>
+        <hr/>
+
+        <!-- Taula amb els resums comercials seleccionats -->
+        <t t-if="docs">  <!-- Només es mostra la taula si hi ha dades -->
+          <table class="table table-sm table-striped" style="width:100%; border-collapse: collapse; margin-top: 10px;">
+            <thead>
+              <tr>
+                <th style="padding: 5px; text-align: left;">Comercial</th>  <!-- Nom del comercial -->
+                <th style="padding: 5px; text-align: left;">Estat</th>  <!-- Estat de la comanda -->
+                <th style="padding: 5px; text-align: right;">Nombre de Comandes</th>  <!-- Quantitat de comandes -->
+                <th style="padding: 5px; text-align: right;">Import Total (€)</th>  <!-- Import total de les comandes -->
+              </tr>
+            </thead>
+            <tbody>
+              <t t-foreach="docs" t-as="rec">  <!-- Iterem sobre els documents de l'informe -->
+                <tr>
+                  <td style="padding: 5px;"><t t-esc="rec.user_id.name or '—'"/></td>  <!-- Nom del comercial -->
+                  <td style="padding: 5px;"><t t-esc="rec.state or '—'"/></td>  <!-- Estat de la comanda -->
+                  <td style="padding: 5px; text-align: right;"><t t-esc="rec.no_of_orders"/></td>  <!-- Quantitat de comandes -->
+                  <td style="padding: 5px; text-align: right;"><t t-esc="'%.2f' % rec.amount_total"/></td>  <!-- Import total formatat amb dues decimals -->
+                </tr>
+              </t>
+            </tbody>
+          </table>
+        </t>
+        <t t-else="">
+          <p>No hi ha dades seleccionades per mostrar.</p>  <!-- Missatge si no hi ha informació -->
+        </t>
+
+      </t>
+    </t>
+  </template>
+</odoo>

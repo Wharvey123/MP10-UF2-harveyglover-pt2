@@ -1,0 +1,4 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"access_custom_sales_sale_order","Access Custom Sales Order","model_sale_order","base.group_user",1,1,1,0
+"access_custom_sales_report_llistat","Access Custom Sales Report","model_report_custom_sales_plantilla_informe_comercial","base.group_user",1,0,0,0
+"access_custom_sales_summary","Access Commercial Summary","model_sale_order_commercial_summary","base.group_user",1,0,0,0

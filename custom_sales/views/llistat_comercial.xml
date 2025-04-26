@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Vista de llistat comercial que mostra les comandes agrupades -->
+    <record id="view_commercial_summary_list" model="ir.ui.view">
+        <field name="name">sale.order.commercial.summary.list</field>  <!-- Nom de la vista -->
+        <field name="model">sale.order.commercial.summary</field>  <!-- Model al qual pertany la vista -->
+        <field name="arch" type="xml">
+          <list string="Resum Comercial per Estat">  <!-- Llista que mostra el resum comercial -->
+            <field name="user_id"/>  <!-- Comercial responsable de la comanda -->
+            <field name="state"/>  <!-- Estat de la comanda -->
+            <field name="no_of_orders"/>  <!-- Nombre total de comandes -->
+            <field name="amount_total" widget="monetary"/>  <!-- Import total amb format monetari -->
+          </list>
+        </field>
+      </record>
+
+    <!-- Acció per obrir la vista agrupada per comercial i estat -->
+    <record id="action_commercial_summary" model="ir.actions.act_window">
+        <field name="name">Llistat Comercial</field>  <!-- Nom de l'acció -->
+        <field name="res_model">sale.order.commercial.summary</field>  <!-- Model afectat per l'acció -->
+        <field name="view_mode">list</field>  <!-- Mode de visualització: llista -->
+        <field name="view_id" ref="view_commercial_summary_list"/>  <!-- Referència a la vista anterior -->
+        <field name="help" type="html">  <!-- Missatge d'ajuda quan no hi ha dades -->
+          <p class="o_view_nocontent_smiling_face">
+            No hi ha dades per mostrar.
+          </p>
+        </field>
+      </record>
+
+    <!-- Acció per generar l'informe comercial en PDF -->
+    <record id="action_print_informe_comercial" model="ir.actions.report">
+        <field name="name">Imprimir Informe Comercial</field>  <!-- Nom de l'acció d'informe -->
+        <field name="model">sale.order.commercial.summary</field>  <!-- Model sobre el qual es genera l'informe -->
+        <field name="report_type">qweb-pdf</field>  <!-- Format de l'informe: PDF -->
+        <field name="report_name">custom_sales.plantilla_informe_comercial</field>  <!-- Nom de la plantilla utilitzada -->
+        <field name="report_file">custom_sales.plantilla_informe_comercial</field>  <!-- Arxiu de la plantilla d'informe -->
+        <field name="binding_model_id" ref="model_sale_order_commercial_summary"/>  <!-- Model al qual està vinculat -->
+        <field name="binding_type">action</field>  <!-- Tipus de vinculació: acció -->
+    </record>
+
+    <!-- Menú per accedir al llistat i a l'informe comercial -->
+    <menuitem id="menu_commercial_summary"
+              name="Llistat Comercial"
+              parent="sale.sale_order_menu"
+              action="custom_sales.action_commercial_summary"
+              sequence="5"/>
+</odoo>

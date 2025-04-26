@@ -91,7 +91,7 @@ class EstateProperty(models.Model):
 
     # w. Comercial: ha de ser un usuari de l’aplicació. Valor per defecte: usuari actual.
     user_id = fields.Many2one('res.users', string="Comercial", default=lambda self: self.env.user)  # Comercial
-
+    
     # Funcions de càlcul
     @api.depends('offer_ids.price')
     def _compute_best_offer(self):

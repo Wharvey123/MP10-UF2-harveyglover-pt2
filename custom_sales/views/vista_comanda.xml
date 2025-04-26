@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Modificació de la vista de formulari de comandes de venda -->
+    <record id="vista_comanda_form" model="ir.ui.view">
+        <field name="name">comanda.venda.form.modificat</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <!-- Camp per mostrar el correu preferencial del client -->
+                <field name="correu_preferent"/>
+                <!-- Camp calculat que mostra el nombre total d'articles de la comanda -->
+                <field name="total_articles" readonly="1"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

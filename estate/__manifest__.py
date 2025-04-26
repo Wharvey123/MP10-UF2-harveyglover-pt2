@@ -6,9 +6,12 @@
     "application": True,  # Indica que és una aplicació
     "depends": ["base"],  # Dependències (per exemple, 'base' per al nucli d'Odoo)
     "data": [
-        "security/ir.model.access.csv",  # Fitxer de drets d'accés
-        "views/estate_property_views.xml",  # Definicions de les vistes de propietats
-        "views/estate_menus.xml",  # Elements de menú per al mòdul
+        'security/ir.model.access.csv', # Arxiu CSV amb els permisos d'accés
+        'views/estate_menus.xml', # Menús
+        'views/estate_property_views.xml', # Vistes
+        'views/estate_property_reports_views.xml', # Vistes dels informes
+        'report/estate_property_templates.xml', # Plantilles dels informes
+        'report/estate_property_reports.xml', # Informes
     ],
     "installable": True,  # Indica que es pot instal·lar
     "license": "LGPL-3",  # Llicència

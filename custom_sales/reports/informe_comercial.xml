@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Definició de l'informe comercial associat a les comandes de venda -->
+    <report
+        id="accio_informe_comercial"
+        model="sale.order"
+        string="Informe Comercial"
+        report_type="qweb-pdf"
+        name="custom_sales.plantilla_informe_comercial"
+        file="custom_sales.plantilla_informe_comercial"
+        print_report_name="'Informe_Comercial_%s' % (object.name)"
+    />
+</odoo>
